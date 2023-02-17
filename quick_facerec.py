@@ -5,8 +5,10 @@ import os
 # Load the known face images and convert them to grayscale
 known_faces_dir = 'known_faces'
 known_faces = []
+known_names = []
 for filename in os.listdir(known_faces_dir):
     image_path = os.path.join(known_faces_dir, filename)
+    known_names.append(filename)
     image = cv2.imread(image_path)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     known_faces.append(image_gray)
@@ -46,7 +48,7 @@ while True:
         if mse_list[best_match_idx] < 100:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(frame, 'Match', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-            cv2.putText(frame, f'Person {best_match_idx + 1}', (x, y+h+30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+            cv2.putText(frame, f'Person {known_names[best_match_idx]}', (x, y+h+30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
         else:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cv2.putText(frame, 'No match', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
