@@ -8,7 +8,7 @@ known_faces = []
 known_names = []
 for filename in os.listdir(known_faces_dir):
     image_path = os.path.join(known_faces_dir, filename)
-    known_names.append(filename)
+    known_names.append(filename.split(".")[0])
     image = cv2.imread(image_path)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     known_faces.append(image_gray)
