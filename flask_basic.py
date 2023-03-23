@@ -6,10 +6,9 @@ import os
 from face_rec import fr_thread
 
 def gen_camera():
-    print(fr_thread.IMAGES_DIR)
     while fr_thread.keep_running:
         frame = fr_thread.frame
-
+        print(frame)
         # Reducing size of streaming
         frame = cv2.resize(frame, (640, 280))
         ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
