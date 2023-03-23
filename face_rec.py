@@ -37,7 +37,6 @@ class FaceRecognitionThread(threading.Thread):
     def run(self):
         while self.keep_running:
             success, frame = self.camera.read()
-            print("frame",frame)
             if not success:
                 break
             else:
@@ -74,7 +73,6 @@ class FaceRecognitionThread(threading.Thread):
                 # frame_resized = cv2.resize(frame, (0, 0), fx=0.1, fy=0.1)
                 # self.frame = frame_resized
                 self.frame = frame
-                print("frame update",self.frame)
 
                 # # Wait for 1 second before capturing the next frame
                 time.sleep(0.01)
