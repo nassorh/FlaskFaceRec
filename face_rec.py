@@ -72,6 +72,7 @@ class FaceRecognitionThread(threading.Thread):
                 # Resize the frame to half of its original size
                 # frame_resized = cv2.resize(frame, (0, 0), fx=0.1, fy=0.1)
                 # self.frame = frame_resized
+                print("Frame",frame)
                 self.frame = frame
 
                 # # Wait for 1 second before capturing the next frame
