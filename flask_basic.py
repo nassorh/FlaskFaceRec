@@ -15,10 +15,11 @@ for filename in os.listdir(IMAGES_DIR):
     image_path = os.path.join(IMAGES_DIR,filename)
 
     image = cv2.imread(image_path)
-    image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    face_encoding = face_recognition.face_encodings(image)
 
-    known_names.append(filename.split(".")[0])
-    known_faces.append(image_gray)
+    if len(face_encoding) > 0:  # Check if a face is found in the image
+        known_names.append(filename.split(".")[0])
+        known_faces.append(face_encoding[0])  # Add the encoding of the first found face in the image
 
 app = Flask(__name__)
 
@@ -32,6 +33,7 @@ def gen_frames():
     while True:
         ret, frame = camera.read()
         frame = cv2.resize(frame, None, fx=SCALE_FACTOR, fy=SCALE_FACTOR)
+        # frame = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
         
         # Find all the faces and their encodings in the current frame
         face_locations = face_recognition.face_locations(frame)
@@ -40,6 +42,7 @@ def gen_frames():
         # Iterate over each detected face
         for (i, face_encoding) in enumerate(face_encodings):
             # Determine if the face is a match for any known face
+
             matches = face_recognition.compare_faces(known_faces, face_encoding, tolerance=0.6)
 
             if len(known_faces) == 0:  # Check if there are no known faces
