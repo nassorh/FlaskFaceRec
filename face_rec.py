@@ -41,14 +41,14 @@ class FaceRecognitionThread(threading.Thread):
                 break
             else:
                 #Half the size
-                frame = cv2.resize(frame, None, fx=self.SCALE_FACTOR, fy=self.SCALE_FACTOR)
+                frame_resize = cv2.resize(frame, None, fx=self.SCALE_FACTOR, fy=self.SCALE_FACTOR)
                 current_time = time.time()
                 # Check if enough time has elapsed since the last face recognition
                 if current_time - self.last_recognition_time >= 5:
                     print("Running fac rec..")
                     # Find all the faces and their encodings in the current frame
-                    face_locations = face_recognition.face_locations(frame)
-                    face_encodings = face_recognition.face_encodings(frame, face_locations)
+                    face_locations = face_recognition.face_locations(frame_resize)
+                    face_encodings = face_recognition.face_encodings(frame_resize, face_locations)
 
                     # Iterate over each detected face
                     for (i, face_encoding) in enumerate(face_encodings):
@@ -87,7 +87,7 @@ def gen_camera():
         frame = fr_thread.frame
 
         # Reducing size of streaming
-        # frame = cv2.resize(frame, (640, 280))
+        frame = cv2.resize(frame, (640, 280))
         ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
         
         frame = buffer.tobytes()
