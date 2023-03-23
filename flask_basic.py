@@ -8,7 +8,6 @@ from face_rec import FaceRecognitionThread
 def gen_camera():
     while fr_thread.keep_running:
         frame = fr_thread.frame
-        print("Frame",frame)
         if frame is not None:
             # Reducing size of streaming
             frame = cv2.resize(frame, (640, 280))
