@@ -60,14 +60,13 @@ class FaceRecognitionThread(threading.Thread):
                             name = "Unknown"
                         else:
                             # Determine the best match for the detected face
-                            best_match_idx = np.argmin(face_recognition.face_distance(known_faces, face_encoding))
+                            best_match_idx = np.argmin(face_recognition.face_distance(self.known_faces, face_encoding))
                             if matches[best_match_idx]:
                                 name = self.known_names[best_match_idx] 
                             else:
                                 name = "Unknown"
                         
-                        cv2.rectangle(frame, (face_locations[i][3], face_locations[i][0]), (face_locations[i][1], face_locations[i][2]), (0, 255, 0), 2)
-                        cv2.putText(frame, name, (face_locations[i][3], face_locations[i][2]+30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+                        print(name)
                     self.last_recognition_time = current_time
 
                 # Resize the frame to half of its original size
