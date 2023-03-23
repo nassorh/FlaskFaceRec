@@ -82,6 +82,7 @@ class FaceRecognitionThread(threading.Thread):
         self.join()
 
 fr_thread = FaceRecognitionThread()
+fr_thread.start()
 def gen_camera():
     while fr_thread.keep_running:
         frame = fr_thread.frame
