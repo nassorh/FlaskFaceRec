@@ -22,7 +22,7 @@ class FaceRecognitionThread(threading.Thread):
                     self.known_names.append(filename.split(".")[0])
                     self.known_faces.append(face_encoding[0])  # Add the encoding of the first found face in the image
 
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(1)
         self.keep_running = True
         self.frame = None
         self.last_recognition_time = time.time()
