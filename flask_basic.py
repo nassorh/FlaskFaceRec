@@ -6,6 +6,8 @@ import os
 from camera_test import camera
 from face_rec import fr_thread,gen_camera
 
+app = Flask(__name__)
+
 @app.route('/')
 def index():
     return render_template('index.html')
