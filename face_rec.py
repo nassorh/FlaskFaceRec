@@ -9,6 +9,7 @@ import face_recognition
 class FaceRecognitionThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        self.faceCascade = cv2.CascadeClassifier('website/haarcascade_frontalface_default.xml')
         self.IMAGES_DIR = 'known_faces'
         self.known_faces = []
         self.known_names = []
