@@ -3,7 +3,7 @@ import face_recognition
 import cv2
 import numpy as np
 import os
-
+from camera_test import camera
 IMAGES_DIR = 'known_faces'
 EXIT_KEY = "q"
 SCALE_FACTOR = 0.5
@@ -22,10 +22,6 @@ for filename in os.listdir(IMAGES_DIR):
         known_faces.append(face_encoding[0])  # Add the encoding of the first found face in the image
 
 app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 def gen_frames():
     camera = cv2.VideoCapture(0)
@@ -65,6 +61,18 @@ def gen_frames():
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     camera.release()
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/ct')
+def camera_test():
+    return render_template('camera.html')
+    
+@app.route('/camera_test')
+def plain_video():
+    return Response(camera(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed')
 def video_feed():
