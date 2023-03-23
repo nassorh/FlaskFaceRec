@@ -87,7 +87,7 @@ def gen_camera():
         frame = fr_thread.frame
 
         # Reducing size of streaming
-        frame = cv2.resize(frame, (640, 280))
+        # frame = cv2.resize(frame, (640, 280))
         ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
         
         frame = buffer.tobytes()

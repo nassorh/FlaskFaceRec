@@ -6,64 +6,6 @@ import os
 from camera_test import camera
 from face_rec import fr_thread,gen_camera
 
-IMAGES_DIR = 'known_faces'
-EXIT_KEY = "q"
-SCALE_FACTOR = 0.5
-
-# Load the known face images and convert them to grayscale
-known_faces = []
-known_names = []
-for filename in os.listdir(IMAGES_DIR):
-    image_path = os.path.join(IMAGES_DIR,filename)
-
-    image = cv2.imread(image_path)
-    face_encoding = face_recognition.face_encodings(image)
-
-    if len(face_encoding) > 0:  # Check if a face is found in the image
-        known_names.append(filename.split(".")[0])
-        known_faces.append(face_encoding[0])  # Add the encoding of the first found face in the image
-
-app = Flask(__name__)
-
-def gen_frames():
-    camera = cv2.VideoCapture(0)
-
-    while True:
-        ret, frame = camera.read()
-        frame = cv2.resize(frame, None, fx=SCALE_FACTOR, fy=SCALE_FACTOR)
-        # frame = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-        
-        # Find all the faces and their encodings in the current frame
-        face_locations = face_recognition.face_locations(frame)
-        face_encodings = face_recognition.face_encodings(frame, face_locations)
-
-        # Iterate over each detected face
-        for (i, face_encoding) in enumerate(face_encodings):
-            # Determine if the face is a match for any known face
-
-            matches = face_recognition.compare_faces(known_faces, face_encoding, tolerance=0.6)
-
-            if len(known_faces) == 0:  # Check if there are no known faces
-                name = "Unknown"
-            else:
-                # Determine the best match for the detected face
-                best_match_idx = np.argmin(face_recognition.face_distance(known_faces, face_encoding))
-                if matches[best_match_idx]:
-                    name = known_names[best_match_idx] 
-                else:
-                    name = "Unknown"
-            
-            cv2.rectangle(frame, (face_locations[i][3], face_locations[i][0]), (face_locations[i][1], face_locations[i][2]), (0, 255, 0), 2)
-            cv2.putText(frame, name, (face_locations[i][3], face_locations[i][2]+30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-            
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-    camera.release()
-
 @app.route('/')
 def index():
     return render_template('index.html')
