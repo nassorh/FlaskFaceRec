@@ -81,5 +81,3 @@ class FaceRecognitionThread(threading.Thread):
     def stop(self):
         self.keep_running = False
         self.join()
-
-fr_thread = FaceRecognitionThread()
