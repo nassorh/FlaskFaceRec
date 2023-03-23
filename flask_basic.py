@@ -9,13 +9,14 @@ def gen_camera():
     while fr_thread.keep_running:
         frame = fr_thread.frame
         print("Frame",frame)
-        # Reducing size of streaming
-        frame = cv2.resize(frame, (640, 280))
-        ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
-        
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        if frame is not None:
+            # Reducing size of streaming
+            frame = cv2.resize(frame, (640, 280))
+            ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
+            
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 app = Flask(__name__)
 
