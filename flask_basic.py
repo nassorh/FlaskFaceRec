@@ -29,6 +29,7 @@ def video_feed():
     return Response(gen_camera(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
+    fr_thread.start()
     app.run(debug=True, host="0.0.0.0",port="5001")
 
 

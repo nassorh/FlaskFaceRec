@@ -82,4 +82,3 @@ class FaceRecognitionThread(threading.Thread):
         self.join()
 
 fr_thread = FaceRecognitionThread()
-fr_thread.start()
