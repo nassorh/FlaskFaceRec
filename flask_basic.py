@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import os
 from camera_test import camera
+from face_rec import fr_thread,gen_camera
+
 IMAGES_DIR = 'known_faces'
 EXIT_KEY = "q"
 SCALE_FACTOR = 0.5
@@ -76,9 +78,10 @@ def plain_video():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_camera(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
+    fr_thread.start()
     app.run(debug=True, host="0.0.0.0",port="5001")
 
 
